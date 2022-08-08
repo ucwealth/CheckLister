@@ -11,7 +11,7 @@ const Form = ({ submitHandler }) => {
             style={styles.input}
             onChangeText={(text) => setInputText(text)}
             value={inputText}
-            placeholder="Enter your to do"
+            placeholder="Enter your task"
             />
             <Button 
             text="Add to list" 

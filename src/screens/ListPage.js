@@ -8,10 +8,7 @@ import { BottomSheet } from 'react-native-btr';
 import Form from '../components/Form';
 
 const ListPage = () => {
-    const [todos, setTodos] = useState([
-        {id: 1, text: "Go to church", isComplete: false},
-        {id: 2, text: "Go to church", isComplete: false},
-    ]);
+    const [todos, setTodos] = useState([]);
     const [visible, setVisible] = useState(false);
     const toggleBottomNavigationView = () => {
         setVisible(!visible);
@@ -41,12 +38,17 @@ const ListPage = () => {
                 <Text style={styles.numTask}>{todos.length} Tasks</Text>
             </View>
             <View style={styles.line} />
+            { todos.length < 1 ? 
+            <View style={styles.listStyle}>
+                <Text style={styles.emptytext}>Click '+' button below to add tasks to your list</Text> 
+            </View> :
             <FlatList 
             data={todos}
             renderItem={renderItem}
             keyExtractor={(item) => item.id}
             style={styles.listStyle}
             />
+            }
             <TouchableOpacity
             style={styles.buttonStyle}
             onPress={toggleBottomNavigationView}
@@ -108,8 +110,15 @@ const styles = StyleSheet.create({
     bottomsheet: {
         backgroundColor: 'white',
         height: 300,
-        borderTopEndRadius: 50,
-        borderTopStartRadius: 50,
+        borderTopEndRadius: 30,
+        borderTopStartRadius: 30,
     },
+    emptytext: {
+        color: 'grey',
+        alignSelf: 'center',
+        marginTop: 100,
+        marginBottom: 200
+        
+    }
 });
 export default ListPage;
