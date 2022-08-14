@@ -40,6 +40,9 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'flex-start',
         alignItems: 'center',
+        backgroundColor: 'white',
+        marginBottom: 3,
+
     },
     checkbox: {
         width: 30,

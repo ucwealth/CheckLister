@@ -6,6 +6,7 @@ import TodoCell from '../components/TodoCell';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { BottomSheet } from 'react-native-btr';
 import Form from '../components/Form';
+import { SwipeListView } from 'react-native-swipe-list-view';
 
 const ListPage = () => {
     const [todos, setTodos] = useState([]);
@@ -29,6 +30,22 @@ const ListPage = () => {
     const renderItem = ({ item }) => (
         <TodoCell text={item.text} isComplete={item.isComplete} />          
     );
+    const deleteItem = (rowKey) => {
+        const newData = [...todos];
+        const prevIndex = todos.findIndex(item => item.id === rowKey);
+        newData.splice(prevIndex, 1);
+        setTodos(newData);
+    };
+    const renderHiddenItem = (data, rowMap) => (
+        <View style={styles.rowBack}>
+            <TouchableOpacity
+            style={[styles.actionButton, styles.deleteBtn]}
+            onPress={() => deleteItem(rowMap, data.item.id)}
+            >
+            <Text style={{ color: '#FFF' }}>Delete</Text>
+            </TouchableOpacity>
+        </View>
+    );
     return (
         <SafeAreaView >
             <Navbar/>
@@ -42,10 +59,13 @@ const ListPage = () => {
             <View style={styles.listStyle}>
                 <Text style={styles.emptytext}>Click '+' button below to add tasks to your list</Text> 
             </View> :
-            <FlatList 
+            <SwipeListView
             data={todos}
             renderItem={renderItem}
-            keyExtractor={(item) => item.id}
+            renderHiddenItem={renderHiddenItem}
+            leftOpenValue={0}
+            rightOpenValue={-105}
+            previewOpenDelay={8000}
             style={styles.listStyle}
             />
             }
@@ -119,6 +139,27 @@ const styles = StyleSheet.create({
         marginTop: 100,
         marginBottom: 200
         
-    }
+    },
+    actionButton: {
+        alignItems: 'center',
+        bottom: 0,
+        justifyContent: 'center',
+        position: 'absolute',
+        top: 0,
+        width: 75,
+      },
+      deleteBtn: {
+        backgroundColor: 'red',
+        right: 0,
+      },
+      rowBack: {
+        alignItems: 'center',
+        backgroundColor: '#fff',
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingLeft: 5,
+        marginBottom: 5,
+      },
 });
 export default ListPage;
