@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-start',
         alignItems: 'center',
         backgroundColor: 'white',
-        marginBottom: 3,
+        marginBottom: 5,
 
     },
     checkbox: {

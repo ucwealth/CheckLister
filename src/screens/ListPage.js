@@ -7,6 +7,8 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import { BottomSheet } from 'react-native-btr';
 import Form from '../components/Form';
 import { SwipeListView } from 'react-native-swipe-list-view';
+import 'react-native-get-random-values';
+import { v4 as uuidv4 } from 'uuid';
 
 const ListPage = () => {
     const [todos, setTodos] = useState([]);
@@ -20,6 +22,7 @@ const ListPage = () => {
                 return [
                     ...prevTodos,
                     {id: Math.random().toString(), text: text, isComplete: false}
+                    // {id: uuidv4(), text: text, isComplete: false}            
                 ];
             })
         } else {
@@ -31,16 +34,15 @@ const ListPage = () => {
         <TodoCell text={item.text} isComplete={item.isComplete} />          
     );
     const deleteItem = (rowKey) => {
-        const newData = [...todos];
-        const prevIndex = todos.findIndex(item => item.id === rowKey);
-        newData.splice(prevIndex, 1);
-        setTodos(newData);
+        setTodos((prevTodos) => {
+            return prevTodos.filter(todo => todo.id != rowKey )
+          })
     };
-    const renderHiddenItem = (data, rowMap) => (
+    const renderHiddenItem = (data) => (
         <View style={styles.rowBack}>
             <TouchableOpacity
             style={[styles.actionButton, styles.deleteBtn]}
-            onPress={() => deleteItem(rowMap, data.item.id)}
+            onPress={() => deleteItem(data.item.id)}
             >
             <Text style={{ color: '#FFF' }}>Delete</Text>
             </TouchableOpacity>
@@ -73,15 +75,15 @@ const ListPage = () => {
             style={styles.buttonStyle}
             onPress={toggleBottomNavigationView}
             >
-             <Icon name="add" size={40} style={styles.plus} />
+            <Icon name="add" size={40} style={styles.plus} />
             </TouchableOpacity> 
             <BottomSheet visible={visible} 
             onBackdropPress={toggleBottomNavigationView}
             onBackButtonPress={toggleBottomNavigationView}
             >
-                <View style={styles.bottomsheet}>
-                    <Form submitHandler={addtoList} />
-                </View>
+            <View style={styles.bottomsheet}>
+                <Form submitHandler={addtoList} />
+            </View>
             </BottomSheet> 
        </SafeAreaView>
     )
